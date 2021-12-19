@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "string.h": "c",
+        "flash_driver.h": "c",
+        "ws2812_driver.h": "c",
+        "stm8s.h": "c",
+        "color_utils.h": "c",
+        "buttons.h": "c",
+        "timer.h": "c",
+        "cmath": "c",
+        "*.tcc": "c",
+        "math.h": "c"
+    }
+}

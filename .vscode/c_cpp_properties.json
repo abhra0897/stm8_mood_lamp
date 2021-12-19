@@ -1,0 +1,37 @@
+{
+    "configurations": [
+        {
+            "name": "stm8",
+            "intelliSenseMode": "${default}",
+            "includePath": [
+                ".",
+                "inc",
+                "/usr/local/share/sdcc/include"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    ".",
+                    "inc",
+                    "/usr/local/share/sdcc/include"
+                ]
+            },
+            "defines": [
+                "F_CPU=16000000UL",
+                "__SDCC",
+                "__SDCC_stm8",
+                "STM8S003",
+                "__interrupt(vector_num)=",
+                ""
+            ],
+            "compilerPath": "/usr/local/bin/sdcc",
+            "compilerArgs": [
+                "-mstm8",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}
