@@ -1,10 +1,6 @@
 #include "color_utils.h"
 
 
-
-float g_rainbow_start_hue = 0.0;
-
-
 void hsv_to_rgb(const CHSV_t *hsv_in, CRGB_t *rgb_out)
 {
     float      hh, p, q, t, ff;

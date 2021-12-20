@@ -13,4 +13,4 @@ void timer_stop();
 uint64_t timer_get_ms_tick();
 void timer4_isr() __interrupt(TIM4_ISR);
 
-#endif
+#endif // _TIMER_H

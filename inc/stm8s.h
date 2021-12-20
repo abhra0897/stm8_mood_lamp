@@ -1,9 +1,15 @@
-// Taken from https://github.com/jukkas/stm8-sdcc-examples/blob/master/stm8.h
-
-/*
- * Register definitions for STM8S103 (and STM8S003)
- * Still incomplete.
+/**
+ * @file stm8s.h
+ * @author Avra Mitra
+ * @brief Register definitions for STM8S103 (and STM8S003). Still incomplete.
+ * Taken from https://github.com/jukkas/stm8-sdcc-examples/blob/master/stm8.h
+ * I have modified and added more register definitions
+ * @date 2021-12-20
+ * 
+ * @copyright Copyright (c) 2021
+ * 
  */
+
 #ifndef _STM8_H
 #define _STM8_H
 
@@ -285,6 +291,33 @@
 #define ADC_CR2_SCAN (1 << 1)
 
 
+/* Flash registers (incomplete) */
+#define FLASH_CR1 *(volatile unsigned char *)0x505A
+#define FLASH_CR2 *(volatile unsigned char *)0x505B
+#define FLASH_NCR2 *(volatile unsigned char *)0x505C
+#define FLASH_FPR *(volatile unsigned char *)0x505D
+#define FLASH_NFPR *(volatile unsigned char *)0x505E
+#define FLASH_IAPSR *(volatile unsigned char *)0x505F
+#define FLASH_PUKR *(volatile unsigned char *)0x5062
+#define FLASH_DUKR *(volatile unsigned char *)0x5064
+
+#define FLASH_CR2_OPT   (1 << 7)
+#define FLASH_CR2_WPRG  (1 << 6)
+#define FLASH_CR2_ERASE  (1 << 5)
+#define FLASH_CR2_FPRG  (1 << 4)
+#define FLASH_CR2_PRG  (1 << 0)
+
+#define FLASH_IAPSR_HVOFF  (1 << 6)
+#define FLASH_IAPSR_DUL  (1 << 3)
+#define FLASH_IAPSR_EOP  (1 << 2)
+#define FLASH_IAPSR_PUL  (1 << 1)
+#define FLASH_IAPSR_WR_PG_DIS  (1 << 0)
+
+#define FLASH_PGM_UNLOCK_KEY_1    0x56
+#define FLASH_PGM_UNLOCK_KEY_2    0xAE
+#define FLASH_EEPROM_UNLOCK_KEY_1    0xAE
+#define FLASH_EEPROM_UNLOCK_KEY_2    0x56
+
 /* Interrupt commands */
 #define enableInterrupts()    {__asm__("rim\n");}  /* enable interrupts */
 #define disableInterrupts()   {__asm__("sim\n");}  /* disable interrupts */
@@ -331,4 +364,4 @@
 /* CPU */
 #define CPU_CCR                 *(volatile unsigned char *)0x7F0A
 
-#endif
+#endif // _STM8_H

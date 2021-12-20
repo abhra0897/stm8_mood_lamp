@@ -1,6 +1,6 @@
 #include "main.h"
 
-
+/* Global Variables */
 button_t g_right_button, g_left_button, g_middle_button;
 uint8_t g_mode = MODE_SPEED;    // current mode (set by middle button single press)
 float g_brightness = 0.5;       // brightness (0 to 1)
@@ -29,9 +29,40 @@ void main(void)
     ws2812_gpio_config();
     buttons_config_settings();
 
+    /**
+     * @brief Sequence to power loss recovery:
+     * 1. Unlock EEPROM
+     * 2. Read the start flasg from address offset 0
+     * 3. if flag = 0xAA, that means EEPROM has valid data.
+     *    So, read from eeprom to relevant global variables
+     */
+    if (flash_unlock_eeprom() == 0)
+    {
+        uint8_t start_flag = 0;
+        uint16_t eeprom_addr_offst = flash_read_eeprom(0x0000, &start_flag, sizeof(start_flag));
+        if (start_flag == 0xAA)
+        {
+            recover_from_eeprom(eeprom_addr_offst);
+        }
+    }
+    
     /* The led array */
     CRGB_t led_array[LED_COUNT];
-    
+
+    /**
+     * @brief Infinite loop. This one handles:
+     * 1. Timer tick
+     * 2. Buttons scan for events
+     * 3. Handle input events and set mode, brightness, hue settings etc.
+     * 4. Fill LED array using rainbow effect
+     * 5. Modify LED array using breathing effect, if breathing is enabled
+     * 6. Modify LED array to display LED blinking based on currently selected mode
+     * 7. Push out the data to ws2812b via gpio
+     * 8. Latch all the w2812b to display the color
+     * 9. Save current settings in EEPROM based on button events
+     * 
+     * Repeat.
+     */
     while(1)
     {
         g_tick_ms = timer_get_ms_tick();
@@ -48,10 +79,10 @@ void main(void)
         {
             ws2812_send_pixel_24bits(led_array[led_cnt].red, led_array[led_cnt].green, led_array[led_cnt].blue);
         }
-        ws2812_send_latch();  
+        ws2812_send_latch(); 
+        save_settings_in_eeprom(0x0000);
     }
 }
-
 
 
 void buttons_config_settings()
@@ -192,3 +223,26 @@ void handle_mode_led_blink(CRGB_t *led)
     }
 }
 
+void save_settings_in_eeprom(uint16_t address_offset)
+{
+    if (g_middle_button.event || g_left_button.event || g_right_button.event)
+    {
+        // This start flasg means eeprom has valid data and is not empty
+        uint8_t start_flag = 0xAA;
+        // next address offset is returned from the function, so we can keep using it
+        address_offset = flash_write_eeprom(address_offset, &start_flag, sizeof(start_flag));
+        address_offset = flash_write_eeprom(address_offset, &g_rainbow_settings, sizeof(g_rainbow_settings));
+        address_offset = flash_write_eeprom(address_offset, &g_brightness, sizeof(g_brightness));
+        address_offset = flash_write_eeprom(address_offset, &g_is_breathing, sizeof(g_is_breathing));
+        address_offset = flash_write_eeprom(address_offset, &g_breathing_delay, sizeof(g_breathing_delay));
+    }
+}
+
+void recover_from_eeprom(uint16_t address_offset)
+{
+    // next address offset is returned from the function, so we can keep using it
+    address_offset = flash_read_eeprom(address_offset, &g_rainbow_settings, sizeof(g_rainbow_settings));
+    address_offset = flash_read_eeprom(address_offset, &g_brightness, sizeof(g_brightness));
+    address_offset = flash_read_eeprom(address_offset, &g_is_breathing, sizeof(g_is_breathing));
+    address_offset = flash_read_eeprom(address_offset, &g_breathing_delay, sizeof(g_breathing_delay));
+}

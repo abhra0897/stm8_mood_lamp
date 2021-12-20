@@ -18,6 +18,7 @@ SRCS += src/ws2812_driver.c
 SRCS += src/buttons.c
 SRCS += src/timer.c
 SRCS += src/color_utils.c
+SRCS += src/flash.c
 
 ################## Objects ####################
 OBJS = build/main.rel
@@ -25,6 +26,7 @@ OBJS += build/ws2812_driver.rel
 OBJS += build/buttons.rel
 OBJS += build/timer.rel
 OBJS += build/color_utils.rel
+OBJS += build/flash.rel
 
 ################## Includes ########################
 INCLS = -I. -Iinc
@@ -37,7 +39,7 @@ LDFLAGS += $(MCFLAGS)
 CFLAGS = --std-sdcc11
 CFLAGS += $(MCFLAGS)
 CFLAGS += -DF_CPU=$(F_CPU)UL
-#CFLAGS += --stack-auto --noinduction --use-non-free 
+CFLAGS += --stack-auto --noinduction --use-non-free 
 
 ############# CFLAGS for Optimization ##################
 

@@ -1,3 +1,13 @@
+/**
+ * @file buttons.h
+ * @author Avra Mitra
+ * @brief Handle button inputs
+ * @date 2021-12-20
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #ifndef _BUTTONS_H
 #define _BUTTONS_H
 
@@ -48,4 +58,4 @@ void buttons_gpio_config();
  */
 int8_t button_process_input(button_t *button, uint64_t tick_ms);
 
-#endif
+#endif // _BUTTONS_H

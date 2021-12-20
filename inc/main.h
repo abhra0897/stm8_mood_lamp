@@ -1,3 +1,16 @@
+/**
+ * @file main.h
+ * @author Avra Mitra
+ * @brief Header for main.c. Modify LED relate settings here.
+ * @date 2021-12-20
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+#ifndef _MAIN_H
+#define _MAIN_H
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
@@ -8,6 +21,7 @@
 #include "timer.h"
 #include "buttons.h"
 #include "color_utils.h"
+#include "flash.h"
 
 #define LED_COUNT               5
 #define MAX_EFFECTS_CNT         2
@@ -43,3 +57,18 @@ void handle_input();
  * @param led pointer to the led for setting the color
  */
 void handle_mode_led_blink(CRGB_t *led);
+
+/**
+ * @brief Save current led seetings in eeprom when a button event occurs
+ * So we can recover the settings after power loss
+ * @param address_offset EEPROM address offset to write
+ */
+void save_settings_in_eeprom(uint16_t address_offset);
+
+/**
+ * @brief Read led settings from eeprom and store in relevant global vars
+ * @param address_offset EEPROM address offset to write
+ */
+void recover_from_eeprom(uint16_t address_offset);
+
+#endif // _MAIN_H

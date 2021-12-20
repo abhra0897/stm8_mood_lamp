@@ -1,3 +1,17 @@
+/**
+ * @file color_utils.h
+ * @author Avra Mitra
+ * @brief Color related operations and calculations
+ * TODO: Add more color effects and make breathing effect smoother
+ * @date 2021-12-20
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+#ifndef _COLOR_UTILS_H
+#define _COLOR_UTILS_H
+
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
@@ -18,7 +32,7 @@ typedef struct _CHSV
 
 }CHSV_t;
 
-typedef struct 
+typedef struct _hue_settings_s
 {
     float hue_min;
     float hue_max;
@@ -96,3 +110,5 @@ void rainbow_color_effect(CRGB_t *led_array, uint8_t led_num, hue_settings_t *hu
  * @param ms_tick tick in ms
  */
 void breathing_effect(CRGB_t *led_array, uint8_t led_num, uint8_t breath_delay, uint64_t ms_tick);
+
+#endif // _COLOR_UTILS_H
