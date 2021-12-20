@@ -36,15 +36,14 @@ void main(void)
      * 3. if flag = 0xAA, that means EEPROM has valid data.
      *    So, read from eeprom to relevant global variables
      */
-    if (flash_unlock_eeprom() == 0)
+    flash_unlock_eeprom();
+    uint8_t start_flag = 0;
+    uint16_t eeprom_addr_offst = flash_read_eeprom(0x0000, &start_flag, sizeof(start_flag));
+    if (start_flag == 0xAA)
     {
-        uint8_t start_flag = 0;
-        uint16_t eeprom_addr_offst = flash_read_eeprom(0x0000, &start_flag, sizeof(start_flag));
-        if (start_flag == 0xAA)
-        {
-            recover_from_eeprom(eeprom_addr_offst);
-        }
+        recover_from_eeprom(eeprom_addr_offst);
     }
+
     
     /* The led array */
     CRGB_t led_array[LED_COUNT];
@@ -144,9 +143,9 @@ void handle_input()
     {
         if (g_is_breathing)
         {
-            --g_breathing_delay;
-            if (g_breathing_delay < 1)
-                g_breathing_delay = 1;
+            ++g_breathing_delay;
+            if (g_breathing_delay > 8)
+                g_breathing_delay = 8;
         }
         else if (g_mode == MODE_SPEED)
         {
@@ -178,9 +177,9 @@ void handle_input()
     {
         if (g_is_breathing)
         {
-            ++g_breathing_delay;
-            if (g_breathing_delay > 8)
-                g_breathing_delay = 8;
+            --g_breathing_delay;
+            if (g_breathing_delay < 1)
+                g_breathing_delay = 1;
         }
         else if (g_mode == MODE_SPEED)
         {

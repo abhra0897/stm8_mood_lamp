@@ -23,7 +23,7 @@
 #include "color_utils.h"
 #include "flash.h"
 
-#define LED_COUNT               5
+#define LED_COUNT               10
 #define MAX_EFFECTS_CNT         2
 
 #define MODE_SPEED              1
